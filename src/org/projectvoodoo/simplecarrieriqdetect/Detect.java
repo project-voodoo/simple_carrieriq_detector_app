@@ -1,15 +1,223 @@
 
 package org.projectvoodoo.simplecarrieriqdetect;
 
-import android.content.Context;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import android.util.Log;
 
 public class Detect {
 
-    Context context;
+    private static final String TAG = "Voodoo SimpleCarrierIQDetector";
 
-    public Detect(Context context) {
-        this.context = context;
+    private HashMap<DetectTest, ArrayList<String>> found = new HashMap<DetectTest, ArrayList<String>>();
 
+    public enum DetectTest {
+
+        KERNEL_DEV("Linux kernel drivers", 100),
+        DMESG("Linux kernel dmesg log", 100),
+        LOGCAT("Android logcat debugging log", 100),
+        ETC_CONFIG("ROM configs", 0),
+        SERVICES("System services", 100),
+        SYSTEM_BINARIES("ROM binaries and daemons", 70),
+        RUNNING_PROCESSES("Running processes", 200);
+
+        public String name;
+        public int confidenceLevel;
+
+        DetectTest(String name, int confidence) {
+            this.name = name;
+            this.confidenceLevel = confidence;
+        }
     }
 
+    public void findEverything() {
+        findKernelDevices();
+        findDmesgStrings();
+        findLogcatStrings();
+        findEtcConfigText();
+        findLogcatStrings();
+        findSystemBinaries();
+        findSystemService();
+        findRunningProcesses();
+    }
+
+    /*
+     * Find kernel devices like /dev/sdio_tty_ciq_00
+     */
+
+    private void findKernelDevices() {
+
+        String[] devicePatterns = {
+                "sdio_tty_ciq.*"
+        };
+
+        String[] socketPatterns = {
+                "iqbrd"
+        };
+
+        ArrayList<String> kernelStuff = new ArrayList<String>();
+
+        try {
+            for (File f : new File("/dev/").listFiles()) {
+
+                for (String fileNamePattern : devicePatterns) {
+                    if (f.getName().matches(fileNamePattern)) {
+                        Log.i(TAG, "suspicious device file found: " + f.getAbsolutePath());
+                        kernelStuff.add(f.getAbsolutePath());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Unable to list /dev");
+            e.getStackTrace();
+        }
+
+        try {
+            for (File f : new File("/dev/socket").listFiles()) {
+
+                for (String fileNamePattern : socketPatterns) {
+                    if (f.getName().matches(fileNamePattern)) {
+                        Log.i(TAG, "suspicious socket found: " + f.getAbsolutePath());
+                        kernelStuff.add(f.getAbsolutePath());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Unable to list /dev sockets");
+            e.getStackTrace();
+        }
+
+        found.put(DetectTest.KERNEL_DEV, kernelStuff);
+    }
+
+    /*
+     * Search in dmesg Linux kernel log
+     */
+
+    private void findDmesgStrings() {
+
+        String[] elements = {
+                "iq.logging.enabled",
+                "iq.cadet",
+                "SDIO_CIQ",
+                "carrieriq",
+                "iqagent"
+        };
+
+        ArrayList<String> lines = Utils.findInCommandOutput("dmesg", elements);
+
+        found.put(DetectTest.DMESG, lines);
+    }
+
+    /*
+     * Android debugging Logcat might be full of Carrier IQ stuff or not.
+     */
+
+    private void findLogcatStrings() {
+
+        String[] elements = {
+                "AppWatcherCIQ",
+                "IQService",
+                "IQBridge",
+                "IQClient",
+                "IQ_METRIC",
+                "_CIQ",
+                "IQ Agent"
+        };
+
+        ArrayList<String> lines = Utils.findInCommandOutput("logcat -d", elements);
+
+        found.put(DetectTest.LOGCAT, lines);
+    }
+
+    /*
+     * Carrier IQ can be configured by text files
+     */
+
+    private void findEtcConfigText() {
+        ArrayList<String> filesList = new ArrayList<String>();
+        ArrayList<String> stringsFound = new ArrayList<String>();
+
+        String[] elements = {
+                "enableCIQ",
+        };
+
+        Utils.findFiles("/etc/", ".*.txt", filesList);
+        for (String filename : filesList) {
+            Log.d(TAG, "txt file for analysis found: " + filename);
+            stringsFound.addAll(Utils.findInFile(filename, elements));
+        }
+
+        found.put(DetectTest.ETC_CONFIG, stringsFound);
+    }
+
+    /*
+     * Carrier IQ is implemented as system binary daemon
+     */
+
+    private void findSystemBinaries() {
+        ArrayList<String> filesList = new ArrayList<String>();
+
+        String[] elements = {
+                "iqmsd",
+                "libiq_.*",
+                "iqbridged"
+        };
+
+        Utils.findFiles("/system", elements, filesList);
+
+        found.put(DetectTest.SYSTEM_BINARIES, filesList);
+    }
+
+    /*
+     * There might be a dedicated system service running
+     */
+
+    private void findSystemService() {
+        String[] elements = {
+                "carrieriq",
+        };
+        ArrayList<String> lines = Utils.findInCommandOutput("service list", elements);
+
+        found.put(DetectTest.SERVICES, lines);
+    }
+
+    /*
+     * Find stuff in running process
+     */
+
+    private void findRunningProcesses() {
+
+        String[] elements = {
+                "iqmsd",
+                "iqbridged",
+                "iqd"
+        };
+
+        ArrayList<String> lines = Utils.findInCommandOutput("ps", elements);
+
+        found.put(DetectTest.RUNNING_PROCESSES, lines);
+    }
+
+    /*
+     * for self-debugging purposes
+     */
+
+    public void listFoundInLogcat() {
+
+        for (DetectTest test : found.keySet()) {
+            Log.i(TAG, "Test for " + test.name);
+
+            if (found.get(test).size() == 0) {
+                Log.i(TAG, "\tnothing found");
+            } else {
+
+                for (String line : found.get(test))
+                    Log.i(TAG, "\tfound:\t" + line);
+            }
+        }
+
+    }
 }

@@ -10,5 +10,10 @@ public class Main extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        Detect detect = new Detect();
+        detect.findEverything();
+
+        detect.listFoundInLogcat();
     }
 }
