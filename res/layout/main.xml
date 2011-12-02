@@ -38,4 +38,11 @@
         </LinearLayout>
     </ScrollView>
 
+    <ProgressBar
+        android:id="@+id/detectionProgress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
 </LinearLayout>
