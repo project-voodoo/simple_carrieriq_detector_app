@@ -1,3 +1,8 @@
-Voodoo Simple CarrierIQ detector
+Voodoo Simple Carrier IQ detector
 
 Naive app that tells if your phone seems to host CarrierIQ elements or not.
+
+Contributions are welcome, especially by authors of anti-CarrierIQ toolkits in order
+to prevent false positive detections.
+
+Current source is only a few hours old as you can see; there's still a lot to do.
