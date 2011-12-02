@@ -2,9 +2,12 @@
 package org.projectvoodoo.simplecarrieriqdetector;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 public class Detect {
@@ -21,7 +24,8 @@ public class Detect {
         ETC_CONFIG("ROM configs", 0),
         SERVICES("System services", 70),
         SYSTEM_BINARIES("ROM binaries and daemons", 70),
-        RUNNING_PROCESSES("Running processes", 200);
+        RUNNING_PROCESSES("Running processes", 200),
+        SUSPICIOUS_CLASSES("Suspicious classes", 250);
 
         public String name;
         public int confidenceLevel;
@@ -41,6 +45,7 @@ public class Detect {
         findSystemBinaries();
         findSystemService();
         findRunningProcesses();
+        findPotentialClasses();
     }
 
     /*
@@ -199,6 +204,36 @@ public class Detect {
         ArrayList<String> lines = Utils.findInCommandOutput("ps", elements);
 
         found.put(DetectTest.RUNNING_PROCESSES, lines);
+    }
+
+    private void findPotentialClasses() {
+
+        String[] classes = {
+                "com.carrieriq.iqagent.service.receivers.BootCompletedReceiver"
+        };
+
+        ArrayList<String> lines = new ArrayList<String>();
+
+        for (String suspiciousclass : classes) {
+            try {
+                Class<?> BroadcastReceiver = Class.forName(suspiciousclass);
+
+                // no error here, that means we found the class!
+                lines.add(suspiciousclass);
+
+                // use this later for specific methods, maybe
+                Method onReceiveMethod = BroadcastReceiver.getMethod("onReceive", new Class[] {
+                        Context.class, Intent.class
+                });
+
+            } catch (ClassNotFoundException e) {
+            } catch (SecurityException e) {
+            } catch (NoSuchMethodException e) {
+                // that's good! :D
+            } catch (IllegalArgumentException e) {
+            }
+        }
+        found.put(DetectTest.SUSPICIOUS_CLASSES, lines);
     }
 
     /*
