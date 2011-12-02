@@ -15,11 +15,11 @@ public class Detect {
 
     public enum DetectTest {
 
-        KERNEL_DEV("Linux kernel drivers", 100),
+        KERNEL_DEV("Linux kernel drivers", 50),
         DMESG("Linux kernel dmesg log", 100),
         LOGCAT("Android logcat debugging log", 100),
         ETC_CONFIG("ROM configs", 0),
-        SERVICES("System services", 100),
+        SERVICES("System services", 70),
         SYSTEM_BINARIES("ROM binaries and daemons", 70),
         RUNNING_PROCESSES("Running processes", 200);
 
@@ -205,7 +205,7 @@ public class Detect {
      * for self-debugging purposes
      */
 
-    public void listFoundInLogcat() {
+    public void dumpFoundInLogcat() {
 
         for (DetectTest test : found.keySet()) {
             Log.i(TAG, "Test for " + test.name);
@@ -218,6 +218,28 @@ public class Detect {
                     Log.i(TAG, "\tfound:\t" + line);
             }
         }
+    }
 
+    /*
+     * Returns if something was detected or not
+     */
+
+    public int getDetectionScore() {
+
+        int score = 0;
+
+        for (DetectTest test : found.keySet()) {
+            if (found.get(test).size() > 0) {
+                Log.d(TAG, "Increase detection score by confidence level " + test.confidenceLevel
+                        + " for " + test);
+                score += test.confidenceLevel;
+            }
+        }
+
+        return score;
+    }
+
+    public HashMap<DetectTest, ArrayList<String>> getFound() {
+        return found;
     }
 }

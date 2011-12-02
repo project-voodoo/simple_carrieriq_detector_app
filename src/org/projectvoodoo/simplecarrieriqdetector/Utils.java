@@ -98,15 +98,20 @@ public class Utils {
         File root = new File(path);
         File[] list = root.listFiles();
 
-        for (File f : list) {
+        try {
+            for (File f : list) {
 
-            if (f.isDirectory())
-                findFiles(f.getAbsolutePath(), patterns, fileList);
-            else
-                for (String pattern : patterns)
-                    if (f.getName().matches(pattern))
-                        fileList.add(f.getAbsolutePath());
+                if (f.isDirectory())
+                    findFiles(f.getAbsolutePath(), patterns, fileList);
+                else
+                    for (String pattern : patterns)
+                        if (f.getName().matches(pattern))
+                            fileList.add(f.getAbsolutePath());
 
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "Unable to list path: " + path);
         }
     }
 }

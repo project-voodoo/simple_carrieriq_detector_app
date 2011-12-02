@@ -3,5 +3,6 @@
 
     <string name="app_name">Voodoo Simple CarrierIQ Detector</string>
     <string name="introduction">Simple CarrierIQ detector</string>
+    <string name="detection_score">"Detection score: (not reliable yet)"</string>
 
 </resources>
