@@ -1,5 +1,5 @@
 
-package org.projectvoodoo.simplecarrieriqdetect;
+package org.projectvoodoo.simplecarrieriqdetector;
 
 import android.app.Activity;
 import android.os.Bundle;

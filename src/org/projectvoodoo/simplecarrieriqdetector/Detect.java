@@ -1,5 +1,5 @@
 
-package org.projectvoodoo.simplecarrieriqdetect;
+package org.projectvoodoo.simplecarrieriqdetector;
 
 import java.io.File;
 import java.util.ArrayList;
