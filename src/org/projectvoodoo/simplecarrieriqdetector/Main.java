@@ -17,7 +17,7 @@ public class Main extends Activity {
 
         setContentView(R.layout.main);
 
-        Detect detect = new Detect();
+        Detect detect = new Detect(getApplicationContext());
         detect.findEverything();
         detect.dumpFoundInLogcat();
 

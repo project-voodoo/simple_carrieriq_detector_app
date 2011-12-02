@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 
 public class Detect {
@@ -15,6 +16,12 @@ public class Detect {
     private static final String TAG = "Voodoo SimpleCarrierIQDetector";
 
     private HashMap<DetectTest, ArrayList<String>> found = new HashMap<DetectTest, ArrayList<String>>();
+
+    private Context mContext;
+
+    public Detect(Context c) {
+        mContext = c;
+    }
 
     public enum DetectTest {
 
@@ -25,6 +32,7 @@ public class Detect {
         SERVICES("System services", 70),
         SYSTEM_BINARIES("ROM binaries and daemons", 70),
         RUNNING_PROCESSES("Running processes", 200),
+        PACKAGES("Packages", 225),
         SUSPICIOUS_CLASSES("Suspicious classes", 250);
 
         public String name;
@@ -46,12 +54,31 @@ public class Detect {
         findSystemService();
         findRunningProcesses();
         findPotentialClasses();
+        findPackages();
+    }
+
+    private void findPackages() {
+        String[] potentialPackages = {
+                "com.carrieriq.iqagent",
+                "com.htc.android.iqagent",
+                "com.carrieriq.tmobile"
+        };
+        ArrayList<String> lines = new ArrayList<String>();
+
+        for (String p : potentialPackages) {
+            try {
+                mContext.getPackageManager().getApplicationInfo(p, 0);
+                lines.add(p);
+            } catch (NameNotFoundException e) {
+            }
+
+        }
+        found.put(DetectTest.PACKAGES, lines);
     }
 
     /*
      * Find kernel devices like /dev/sdio_tty_ciq_00
      */
-
     private void findKernelDevices() {
 
         String[] devicePatterns = {
