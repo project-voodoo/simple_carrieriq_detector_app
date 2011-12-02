@@ -216,13 +216,13 @@ public class Detect {
 
         for (String suspiciousclass : classes) {
             try {
-                Class<?> BroadcastReceiver = Class.forName(suspiciousclass);
+                Class<?> Object = Class.forName(suspiciousclass);
 
                 // no error here, that means we found the class!
                 lines.add(suspiciousclass);
 
                 // use this later for specific methods, maybe
-                Method onReceiveMethod = BroadcastReceiver.getMethod("onReceive", new Class[] {
+                Method onReceiveMethod = Object.getMethod("onReceive", new Class[] {
                         Context.class, Intent.class
                 });
 
