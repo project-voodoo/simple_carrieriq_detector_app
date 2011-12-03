@@ -23,7 +23,8 @@ public class Detect {
 
     public enum DetectTest {
 
-        KERNEL_DEV("Linux kernel drivers", 50),
+        KERNEL_INTERFACES("Linux kernel interfaces", 50),
+        KERNEL_DRIVERS("Linux kernel drivers", 50),
         DMESG("Linux kernel dmesg log", 100),
         LOGCAT("Android logcat debugging log", 100),
         ETC_CONFIG("ROM configs", 0),
@@ -44,6 +45,7 @@ public class Detect {
 
     public void findEverything() {
         findKernelDevices();
+        findInKallsyms();
         findDmesgStrings();
         findLogcatStrings();
         findEtcConfigText();
@@ -77,6 +79,7 @@ public class Detect {
     /*
      * Find kernel devices like /dev/sdio_tty_ciq_00
      */
+
     private void findKernelDevices() {
 
         String[] devicePatterns = {
@@ -119,7 +122,23 @@ public class Detect {
             e.getStackTrace();
         }
 
-        found.put(DetectTest.KERNEL_DEV, kernelStuff);
+        found.put(DetectTest.KERNEL_INTERFACES, kernelStuff);
+    }
+
+    /*
+     * Find kernel drivers implementations
+     */
+
+    private void findInKallsyms() {
+
+        String[] elements = {
+                    "_ciq_",
+            };
+
+        ArrayList<String> lines = Utils.findInFile("/proc/kallsyms", elements);
+
+        found.put(DetectTest.KERNEL_DRIVERS, lines);
+
     }
 
     /*
