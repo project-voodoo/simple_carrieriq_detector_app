@@ -30,8 +30,8 @@ public class Detect {
         SERVICES("System services", 70),
         SYSTEM_BINARIES("ROM binaries and daemons", 70),
         RUNNING_PROCESSES("Running processes", 200),
-        PACKAGES("Packages", 225),
-        SUSPICIOUS_CLASSES("Suspicious classes", 250);
+        PACKAGES("Packages", 70),
+        SUSPICIOUS_CLASSES("Suspicious classes", 0);
 
         public String name;
         public int confidenceLevel;
