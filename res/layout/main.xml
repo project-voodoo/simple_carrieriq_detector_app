@@ -19,7 +19,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
-        android:id="@+id/score"
+        android:id="@+id/result_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <TextView
+        android:id="@+id/numeric_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""

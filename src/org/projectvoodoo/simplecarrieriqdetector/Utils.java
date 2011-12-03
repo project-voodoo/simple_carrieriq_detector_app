@@ -52,6 +52,7 @@ public class Utils {
                 for (String pattern : elements)
                     if (line.contains(pattern)
                             && !line.contains("SimpleCarrierIQDetector")
+                            && !line.contains("com.lookout")
                             && !line.contains("projectvoodoo")) {
                         lines.add(line);
                     }

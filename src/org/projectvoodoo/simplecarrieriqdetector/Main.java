@@ -31,11 +31,26 @@ public class Main extends Activity {
         private Detect detect;
 
         @Override
-        protected void onPostExecute(Integer result) {
-            super.onPostExecute(result);
+        protected void onPostExecute(Integer detectionScore) {
+            super.onPostExecute(detectionScore);
 
-            TextView score = (TextView) findViewById(R.id.score);
-            score.setText(result + "");
+            TextView resultDisplay = (TextView) findViewById(R.id.result_display);
+            if (detectionScore == 0) {
+                resultDisplay.setText(R.string.not_found);
+                resultDisplay.setTextColor(Color.GREEN);
+            } else if (detect.getFound().get(DetectTest.RUNNING_PROCESSES).size() > 0) {
+                resultDisplay.setText(R.string.found_active);
+                resultDisplay.setTextColor(Color.RED);
+            } else {
+                resultDisplay.setText(R.string.found_inactive);
+                resultDisplay.setTextColor(Color.RED);
+            }
+
+            TextView numericScore = (TextView) findViewById(R.id.numeric_score);
+            if (detectionScore > 0)
+                numericScore.setText("detection score (less is better): " + detectionScore);
+            else
+                numericScore.setVisibility(View.GONE);
 
             LinearLayout details = (LinearLayout) findViewById(R.id.details_list);
 
