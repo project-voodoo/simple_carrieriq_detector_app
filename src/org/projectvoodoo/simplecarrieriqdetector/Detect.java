@@ -147,6 +147,8 @@ public class Detect {
         ArrayList<String> deviceWorkarounds = new ArrayList<String>();
         deviceWorkarounds.add("sholes");
         deviceWorkarounds.add("umts_sholes");
+        deviceWorkarounds.add("jordan");
+        deviceWorkarounds.add("umts_jordan");
 
         ArrayList<String> lines = new ArrayList<String>();
 
