@@ -148,10 +148,13 @@ public class Detect {
     private void findDmesgStrings() {
 
         String[] elements = {
-                "iq.logging.enabled",
+                "iq.logging",
+                "iq.service",
                 "iq.cadet",
+                "iq.bridge",
                 "SDIO_CIQ",
                 "carrieriq",
+                "ttyCIQ",
                 "iqagent"
         };
 
