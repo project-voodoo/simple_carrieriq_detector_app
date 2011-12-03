@@ -61,7 +61,7 @@ public class Detect {
      * Finds if applications are registered with Android by its package name
      * specifically, we are looking for commin CIQ package names.
      */
-    
+
     private void findPackages() {
 
         String[] potentialPackages = {
@@ -76,7 +76,8 @@ public class Detect {
                 mContext.getPackageManager().getApplicationInfo(p, 0);
                 lines.add(p);
             } catch (NameNotFoundException e) {
-                //if an exception is thrown that means the package was not found or registered with Android
+                // if an exception is thrown that means the package was not
+                // found or registered with Android
             }
 
         }
@@ -263,15 +264,15 @@ public class Detect {
 
         found.put(DetectTest.RUNNING_PROCESSES, lines);
     }
-    
+
     /*
      * Try to call certain classes directly
      */
-    
+
     private void findPotentialClasses() {
 
         String[] classes = {
-            "com.carrieriq.iqagent.service.receivers.BootCompletedReceiver"
+                "com.carrieriq.iqagent.service.receivers.BootCompletedReceiver"
         };
 
         ArrayList<String> lines = new ArrayList<String>();
