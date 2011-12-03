@@ -176,7 +176,11 @@ public class Detect {
                 "IQClient",
                 "IQ_METRIC",
                 "_CIQ",
-                "IQ Agent"
+                "IQ Agent",
+                "carrieriq",
+                "iqagent",
+                "KernelPanicCiqBroadcastReceiver",
+                ".iqd"
         };
 
         ArrayList<String> lines = Utils.findInCommandOutput("logcat -d", elements);
