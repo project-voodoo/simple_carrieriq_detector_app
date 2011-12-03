@@ -2,12 +2,10 @@
 package org.projectvoodoo.simplecarrieriqdetector;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 
@@ -241,23 +239,16 @@ public class Detect {
 
         ArrayList<String> lines = new ArrayList<String>();
 
-        for (String suspiciousclass : classes) {
+        for (String suspiciousClass : classes) {
             try {
-                Class<?> Object = Class.forName(suspiciousclass);
+                Class.forName(suspiciousClass);
 
                 // no error here, that means we found the class!
-                lines.add(suspiciousclass);
+                lines.add(suspiciousClass);
 
-                // use this later for specific methods, maybe
-                Method onReceiveMethod = Object.getMethod("onReceive", new Class[] {
-                        Context.class, Intent.class
-                });
-
-            } catch (ClassNotFoundException e) {
-            } catch (SecurityException e) {
-            } catch (NoSuchMethodException e) {
-                // that's good! :D
-            } catch (IllegalArgumentException e) {
+            } catch (Exception e) {
+                // exception here is a good thing, it means the offending
+                // class is not existing in the system
             }
         }
         found.put(DetectTest.SUSPICIOUS_CLASSES, lines);
