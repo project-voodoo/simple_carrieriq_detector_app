@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
 import android.util.Log;
 
 public class Detect {
@@ -143,7 +144,16 @@ public class Detect {
                     "_ciq_",
             };
 
-        ArrayList<String> lines = Utils.findInFile("/proc/kallsyms", elements);
+        ArrayList<String> deviceWorkarounds = new ArrayList<String>();
+        deviceWorkarounds.add("sholes");
+        deviceWorkarounds.add("umts_sholes");
+
+        ArrayList<String> lines = new ArrayList<String>();
+
+        if (deviceWorkarounds.contains(Build.DEVICE))
+            Log.d(TAG, "kallsyms detection workaround for " + Build.DEVICE + " kernel bug");
+        else
+            lines.addAll(Utils.findInFile("/proc/kallsyms", elements));
 
         found.put(DetectTest.KERNEL_DRIVERS, lines);
 
