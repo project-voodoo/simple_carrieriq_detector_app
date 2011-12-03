@@ -43,7 +43,7 @@ public class Main extends Activity {
                 resultDisplay.setTextColor(Color.RED);
             } else {
                 resultDisplay.setText(R.string.found_inactive);
-                resultDisplay.setTextColor(Color.RED);
+                resultDisplay.setTextColor(Color.YELLOW);
             }
 
             TextView numericScore = (TextView) findViewById(R.id.numeric_score);

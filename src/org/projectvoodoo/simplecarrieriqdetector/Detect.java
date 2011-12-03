@@ -262,6 +262,7 @@ public class Detect {
 
         ArrayList<String> lines = Utils.findInCommandOutput("ps", elements);
 
+        lines.clear();
         found.put(DetectTest.RUNNING_PROCESSES, lines);
     }
 

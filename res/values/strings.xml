@@ -3,9 +3,9 @@
 
     <string name="app_name">Voodoo CarrierIQ Detector</string>
     <string name="introduction">Simple CarrierIQ detector</string>
-    <string name="detection_score">Detection score: (not fully reliable yet)</string>
     <string name="not_found">Carrier IQ was not found</string>
     <string name="found_active">Carrier IQ found and is active</string>
-    <string name="found_inactive">Carrier IQ elements found but it looks inactive</string>
+    <string name="found_inactive">Carrier IQ elements found\n− however it seems inactive</string>
+    <string name="notice">Application in development: please read Android Market description</string>
 
 </resources>
