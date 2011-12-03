@@ -272,7 +272,8 @@ public class Detect {
     private void findPotentialClasses() {
 
         String[] classes = {
-                "com.carrieriq.iqagent.service.receivers.BootCompletedReceiver"
+                "com.carrieriq.iqagent.service.receivers.BootCompletedReceiver",
+                "com.carrieriq.iqagent.IQService"
         };
 
         ArrayList<String> lines = new ArrayList<String>();
