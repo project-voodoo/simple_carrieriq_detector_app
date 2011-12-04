@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -27,6 +28,15 @@ public class Main extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
+         * Display version in app title.
+         */
+        try {
+            setTitle(getTitle() + " "
+                    + getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
+        } catch (NameNotFoundException e) {
+        }
 
         setContentView(R.layout.main);
 
