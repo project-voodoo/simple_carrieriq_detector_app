@@ -60,7 +60,7 @@ public class Detect {
 
     /*
      * Finds if applications are registered with Android by its package name
-     * specifically, we are looking for commin CIQ package names.
+     * specifically, we are looking for common CIQ package names.
      */
 
     private void findPackages() {
