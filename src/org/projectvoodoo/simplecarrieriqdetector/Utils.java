@@ -12,7 +12,7 @@ import android.util.Log;
 
 public class Utils {
 
-    private static final String TAG = "Voodoo Utils";
+    private static final String TAG = "Voodoo CarrierIQDetector Utils";
 
     public static final String getCommandOutput(String command) {
 

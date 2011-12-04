@@ -23,7 +23,7 @@ public class Main extends Activity {
     private DetectorTask dt = new DetectorTask();
     private Detect detect;
     private Boolean ccDev = true;
-    private final static String TAG = "Voodoo SimpleCarrierIQDetector Main";
+    private final static String TAG = "Voodoo CarrierIQDetector Main";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
