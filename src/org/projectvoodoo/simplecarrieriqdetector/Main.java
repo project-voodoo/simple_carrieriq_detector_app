@@ -29,9 +29,7 @@ public class Main extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*
-         * Display version in app title.
-         */
+        // Display version in app title.
         try {
             setTitle(getTitle() + " "
                     + getPackageManager().getPackageInfo(getPackageName(), 0).versionName);
@@ -46,6 +44,10 @@ public class Main extends Activity {
 
     }
 
+    /*
+     * Listen for send button clicks
+     */
+
     android.view.View.OnClickListener sendClickListener = new android.view.View.OnClickListener() {
 
         @Override
@@ -53,6 +55,11 @@ public class Main extends Activity {
             askUserForReportCC();
         }
     };
+
+    /*
+     * Ask if the user wants or not to CC dev when sending a report, then
+     * trigger it!
+     */
 
     private void askUserForReportCC() {
         ccDev = true;
@@ -145,6 +152,10 @@ public class Main extends Activity {
         startActivity(chooser);
 
     }
+
+    /*
+     * Async detection task and UI formatting
+     */
 
     private class DetectorTask extends AsyncTask<Void, Integer, Integer> {
 
