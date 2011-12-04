@@ -45,6 +45,7 @@ public class Main extends Activity {
     };
 
     private void askUserForReportCC() {
+        ccDev = true;
 
         AlertDialog builder = new AlertDialog.Builder(this)
                 .setMultiChoiceItems(R.array.dialog,
