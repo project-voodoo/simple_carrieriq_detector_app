@@ -173,8 +173,6 @@ public class Detect {
                 "iq.cadet",
                 "iq.bridge",
                 "SDIO_CIQ",
-                "com.carrieriq.",
-                "com/carrieriq/",
                 "ttyCIQ",
                 "iqagent"
         };
@@ -198,12 +196,13 @@ public class Detect {
                 "IQ_METRIC",
                 "_CIQ",
                 "IQ Agent",
-                "carrieriq",
                 "iqagent",
                 "KernelPanicCiqBroadcastReceiver",
                 "ToCIQ",
                 "submitAL34",
                 "AgentService_J",
+                "com.carrieriq.",
+                "com/carrieriq/",
                 ".iqd"
         };
 
