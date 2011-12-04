@@ -64,8 +64,8 @@ public class Main extends Activity {
         content += "\nDetection score: " + detect.getDetectionScore();
 
         for (DetectTest test : detect.getFound().keySet()) {
-            content += "\n\n\nTest for: " + test.name + "\n(" + test + ", confidence "
-                    + test.confidenceLevel + ")\n";
+            content += "\n\n\nTest for: " + test.name + "\n(" + test + ", weight "
+                    + test.weight + ")\n";
 
             if (detect.getFound().get(test).size() == 0) {
                 content += "\n    nothing found";
@@ -124,7 +124,7 @@ public class Main extends Activity {
             for (DetectTest test : detect.getFound().keySet()) {
 
                 TextView title = new TextView(Main.this);
-                title.setText(test.name + "\nconfidence level: " + test.confidenceLevel);
+                title.setText(test.name + "\nweight: " + test.weight);
                 title.setPadding(8, 8, 8, 8);
                 title.setTextSize(20);
                 title.setTextColor(Color.WHITE);

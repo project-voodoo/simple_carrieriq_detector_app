@@ -36,11 +36,11 @@ public class Detect {
         SUSPICIOUS_CLASSES("Suspicious classes", 0);
 
         public String name;
-        public int confidenceLevel;
+        public int weight;
 
-        DetectTest(String name, int confidence) {
+        DetectTest(String name, int weight) {
             this.name = name;
-            this.confidenceLevel = confidence;
+            this.weight = weight;
         }
     }
 
@@ -335,9 +335,9 @@ public class Detect {
 
         for (DetectTest test : found.keySet()) {
             if (found.get(test).size() > 0) {
-                Log.d(TAG, "Increase detection score by confidence level " + test.confidenceLevel
+                Log.d(TAG, "Increase detection score by confidence level " + test.weight
                         + " for " + test);
-                score += test.confidenceLevel;
+                score += test.weight;
             }
         }
 
