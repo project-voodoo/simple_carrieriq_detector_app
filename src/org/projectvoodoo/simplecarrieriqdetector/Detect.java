@@ -201,6 +201,9 @@ public class Detect {
                 "carrieriq",
                 "iqagent",
                 "KernelPanicCiqBroadcastReceiver",
+                "ToCIQ",
+                "submitAL34",
+                "AgentService_J",
                 ".iqd"
         };
 
