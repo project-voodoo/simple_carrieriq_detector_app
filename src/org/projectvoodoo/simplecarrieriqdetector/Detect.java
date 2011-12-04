@@ -68,6 +68,7 @@ public class Detect {
         String[] potentialPackages = {
                 "com.carrieriq.iqagent",
                 "com.htc.android.iqagent",
+                "com.carrieriq.attrom",
                 "com.carrieriq.tmobile"
         };
         ArrayList<String> lines = new ArrayList<String>();
