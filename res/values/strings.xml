@@ -7,5 +7,7 @@
     <string name="found_active">Carrier IQ found and is active</string>
     <string name="found_inactive">Carrier IQ elements found\n− however it seems inactive</string>
     <string name="notice">Application in development: please read Android Market description</string>
+    <string name="email_template">Voodoo Carrier IQ Detector report:\n\n</string>
+    <string name="send_report">Send details by mail</string>
 
 </resources>

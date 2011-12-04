@@ -18,6 +18,13 @@
         android:text="@string/notice"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
+    <Button
+        android:id="@+id/send_report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="@string/send_report" />
+
     <TextView
         android:id="@+id/result_display"
         android:layout_width="wrap_content"

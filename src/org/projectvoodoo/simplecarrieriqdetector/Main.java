@@ -2,11 +2,16 @@
 package org.projectvoodoo.simplecarrieriqdetector;
 
 import org.projectvoodoo.simplecarrieriqdetector.Detect.DetectTest;
+
 import android.app.Activity;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -14,6 +19,8 @@ import android.widget.TextView;
 public class Main extends Activity {
 
     private DetectorTask dt = new DetectorTask();
+    private Detect detect;
+    private final static String TAG = "Voodoo SimpleCarrierIQDetector Main";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -24,11 +31,71 @@ public class Main extends Activity {
         // run asynchronously the detection stuff
         dt = new DetectorTask();
         dt.execute();
+
+    }
+
+    android.view.View.OnClickListener foo = new android.view.View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            sendReport();
+        }
+    };
+
+    /*
+     * export the detection results by mail or anything able to share text
+     */
+
+    private void sendReport() {
+
+        int detectionScore = detect.getDetectionScore();
+
+        String content = "";
+        content += getString(R.string.email_template);
+        content += "Build fingerprint:\n" + Build.FINGERPRINT + "\n\n";
+
+        if (detectionScore == 0)
+            content += getString(R.string.not_found);
+        else if (detect.getFound().get(DetectTest.RUNNING_PROCESSES).size() > 0)
+            content += getString(R.string.found_active);
+        else
+            content += getString(R.string.found_inactive);
+
+        content += "\nDetection score: " + detect.getDetectionScore();
+
+        for (DetectTest test : detect.getFound().keySet()) {
+            content += "\n\n\nTest for: " + test.name + "\n(" + test + ", confidence "
+                    + test.confidenceLevel + ")\n";
+
+            if (detect.getFound().get(test).size() == 0) {
+                content += "\n    nothing found";
+            } else {
+                for (String line : detect.getFound().get(test))
+                    content += "\n    found:    " + line;
+            }
+        }
+        try {
+            String appVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            content += "\n\n\n-- \n";
+            content += getString(R.string.app_name) + " " + appVersion;
+
+        } catch (Exception e) {
+        }
+
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, Build.BRAND + " " + Build.MODEL + " ("
+                + Build.DEVICE + ")"
+                + " Voodoo Carrier IQ Detector report");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, content);
+        sendIntent.setType("text/plain");
+
+        Intent chooser = Intent.createChooser(sendIntent, "send report mail");
+        chooser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(chooser);
+
     }
 
     private class DetectorTask extends AsyncTask<Void, Integer, Integer> {
-
-        private Detect detect;
 
         @Override
         protected void onPostExecute(Integer detectionScore) {
@@ -77,6 +144,11 @@ public class Main extends Activity {
                     details.addView(content);
                 }
             }
+
+            Button sendButton = (Button) findViewById(R.id.send_report);
+            sendButton.setEnabled(true);
+            sendButton.setOnClickListener(foo);
+
         }
 
         @Override
