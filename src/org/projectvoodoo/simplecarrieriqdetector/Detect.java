@@ -173,7 +173,8 @@ public class Detect {
                 "iq.cadet",
                 "iq.bridge",
                 "SDIO_CIQ",
-                "carrieriq",
+                "com.carrieriq.",
+                "com/carrieriq/",
                 "ttyCIQ",
                 "iqagent"
         };
