@@ -4,7 +4,8 @@ package org.projectvoodoo.simplecarrieriqdetector;
 import org.projectvoodoo.simplecarrieriqdetector.Detect.DetectTest;
 
 import android.app.Activity;
-import android.content.DialogInterface.OnClickListener;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -20,6 +21,7 @@ public class Main extends Activity {
 
     private DetectorTask dt = new DetectorTask();
     private Detect detect;
+    private Boolean ccDev = true;
     private final static String TAG = "Voodoo SimpleCarrierIQDetector Main";
 
     @Override
@@ -34,13 +36,40 @@ public class Main extends Activity {
 
     }
 
-    android.view.View.OnClickListener foo = new android.view.View.OnClickListener() {
+    android.view.View.OnClickListener sendClickListener = new android.view.View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
-            sendReport();
+            askUserForReportCC();
         }
     };
+
+    private void askUserForReportCC() {
+
+        AlertDialog builder = new AlertDialog.Builder(this)
+                .setMultiChoiceItems(R.array.dialog,
+                        new boolean[] {
+                            true
+                        },
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton,
+                                    boolean isChecked) {
+
+                                ccDev = isChecked;
+                            }
+                        })
+                .setPositiveButton(R.string.send_report,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                sendReport();
+                            }
+                        })
+                .create();
+
+        builder.show();
+
+    }
 
     /*
      * export the detection results by mail or anything able to share text
@@ -82,11 +111,22 @@ public class Main extends Activity {
         } catch (Exception e) {
         }
 
+        String[] mailCC = {
+                "Project Voodoo developer <pr" +
+                        "oject.v" +
+                        "oodoo.co" +
+                        "ntact@g" +
+                        "mai" +
+                        "l.com>"
+        };
+
         Intent sendIntent = new Intent(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, Build.BRAND + " " + Build.MODEL + " ("
                 + Build.DEVICE + ")"
                 + " Voodoo Carrier IQ Detector report");
         sendIntent.putExtra(Intent.EXTRA_TEXT, content);
+        if (ccDev)
+            sendIntent.putExtra(Intent.EXTRA_CC, mailCC);
         sendIntent.setType("text/plain");
 
         Intent chooser = Intent.createChooser(sendIntent, "send report mail");
@@ -147,7 +187,7 @@ public class Main extends Activity {
 
             Button sendButton = (Button) findViewById(R.id.send_report);
             sendButton.setEnabled(true);
-            sendButton.setOnClickListener(foo);
+            sendButton.setOnClickListener(sendClickListener);
 
         }
 

@@ -10,4 +10,8 @@
     <string name="email_template">Voodoo Carrier IQ Detector report:\n\n</string>
     <string name="send_report">Send details by mail</string>
 
+    <string-array name="dialog">
+        <item>CC developer</item>
+    </string-array>
+
 </resources>
