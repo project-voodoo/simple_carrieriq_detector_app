@@ -151,6 +151,8 @@ public class Detect {
         deviceWorkarounds.add("umts_jordan");
         deviceWorkarounds.add("cdma_shadow");
         deviceWorkarounds.add("daytona");
+        deviceWorkarounds.add("morrison");
+        deviceWorkarounds.add("zeppelin");
 
         ArrayList<String> lines = new ArrayList<String>();
 
